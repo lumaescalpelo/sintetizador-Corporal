@@ -36,15 +36,11 @@ Para realizar las conexiones se requiere:
 Para correr el Software se requiere:
 - 1 Equipo PC/MAC
 
-## Direcciones I2C
+### Direcciones I2C
 
 Los sensores cuentan con las siguientes direcciones I2C
 
 ```
-HW-290
-0x68 → AD0 a GND (la más común)
-0x69 → AD0 a VCC
-
 ENS160 + AHT2X
 
 ENS160
@@ -64,3 +60,15 @@ Magnetómetro interno (AK09916)
 0x0C
 ```
 
+## Software
+
+Este proyecto requiere una colección de software necesaria para el funcionamiento de todos sus sistemas. Debido a que puede instalarse en multiples sistemas operativos y plataformas, se enlaza la documentación oficial de cada software. Las pruebas fueron realizadas en Fedora 43. Las versiones de los softwares utilizados se indican en cada etapa.
+
+- [Arduino IDE](https://www.arduino.cc/en/software/). Probado con la versión 2.3.7
+- [ESP32 para Arduino IDE](https://docs.espressif.com/projects/arduino-esp32/en/latest/installing.html). Probado con la versón 2.0.18-arduino.5
+- [Node.JS](https://nodejs.org/en/download). Probado con la versión 24.13.1 LTS
+- [NPM](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm). Probado con la versión 11.8.0
+- [Node-Red](https://nodered.org/docs/getting-started/local). Probado con la versión 4.1.5
+- [Mosquitto](https://mosquitto.org/download/). Probado con la versión 2.0.22
+
+Consulta cada carpeta correspondiente a cada software para verificar configuraciones específicas.
