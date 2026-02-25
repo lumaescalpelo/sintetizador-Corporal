@@ -3,8 +3,8 @@
 #include <PubSubClient.h>
 
 // ================= WiFi / MQTT =================
-static const char* WIFI_SSID = "********";
-static const char* WIFI_PASS = "********";
+static const char* WIFI_SSID = "INFINITUMD2AC";
+static const char* WIFI_PASS = "PCwGdtcV9D";
 
 static const char* MQTT_HOST = "192.168.1.100";
 static const uint16_t MQTT_PORT = 1883;

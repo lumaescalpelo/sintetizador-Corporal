@@ -2,6 +2,15 @@
 
 Este proyeceto hace uso de un ESP32 Devkit V1 para la lectura de los sensores.
 
+## Bibliotecas
+
+Para correr los programas, se requieren las siguientes bibliotecas.
+
+- ArduinoJson de Benoit Blanchon. Versión probrada 7.4.2
+- AHTX0 de Adafruit. Versión probada 2.0.5
+- Adafruit Unified Sensor de Adafruit. Versión probada 1.1.15
+- PubSubClient de Nick O'Leary. Versión probada 2.8
+
 ## Programas de prueba
 
 Se realizaron una serie de programas de prueba para verificar progresivamente el funcionamiento de todos los sensores.
@@ -11,3 +20,5 @@ Se realizaron una serie de programas de prueba para verificar progresivamente el
 - **I2C_Reader_0X**. Son programas que realizan la lectura de todos los sensores por diferentes métodos.
 - **Full_Reader_01**. Es un programa que realiza la lectura de los sensores analógicos y digitales y reporta todos los valores vía Serial.
 - **Full_MQTT_01**. Es un programa que realiza la lectura de todos los sensores y la reporta en un mensaje MQTT separado por comas al tema `sinte/cuerpo1`. Los datos se envían a una IP fija y a una red predeterminada, estos deben actualizarse en caso de cambiar de configuración.
+
+
