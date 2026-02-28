@@ -26,4 +26,5 @@ Los siguientes programas corresponden a la etapa de desarrollo en la que los sen
 Los siguientes programas corresponden a la etapa de desarrollo en la que se agrega un tercer bus específico para el sensor ENS+AHT en un bus separado en los pines 25/26.
 
 - **ENS_AHT_Tester**. Es un programa que realiza sólo la lectura del sensor ENS+AHT para garantizar su lectura en un tercer bus.
-- **Full_MQTT_02**. Ete programa realiza la lectura de todos los sensores y corrige el problema de lectura del ENS+AHT que ahora se encuentra en un tercer bus separado. Este cambio se debe a que este sensor requiere condiciones específicas de lectura.
+- **Full_MQTT_02**. Este programa realiza la lectura de todos los sensores y corrige el problema de lectura del ENS+AHT que ahora se encuentra en un tercer bus separado. Este cambio se debe a que este sensor requiere condiciones específicas de lectura.
+- **Full_MQTT_03**. Este programa envía los valores con punto decimar ajustado para simplificar el envío.
