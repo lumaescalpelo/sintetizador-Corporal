@@ -11,6 +11,7 @@
         "id": "1e6bb26798d95fd9",
         "type": "group",
         "z": "2f5755c7fdf3b0c1",
+        "g": "683bbfe09cd44658",
         "style": {
             "stroke": "#999999",
             "stroke-opacity": "1",
@@ -29,8 +30,8 @@
             "22795b8369b658dd",
             "cae2c5596127d214"
         ],
-        "x": 894,
-        "y": 159,
+        "x": 934,
+        "y": 239,
         "w": 352,
         "h": 282
     },
@@ -56,8 +57,8 @@
             "e6d6a2a1f4ec1f3b",
             "40f6363e9f5adc30"
         ],
-        "x": 414,
-        "y": 579,
+        "x": 434,
+        "y": 779,
         "w": 452,
         "h": 242
     },
@@ -83,8 +84,8 @@
             "059c4ba9950733dd",
             "bba405d8211cad9c"
         ],
-        "x": 894,
-        "y": 579,
+        "x": 914,
+        "y": 779,
         "w": 432,
         "h": 242
     },
@@ -92,6 +93,7 @@
         "id": "76eda127d9017459",
         "type": "group",
         "z": "2f5755c7fdf3b0c1",
+        "g": "7ec45998b9e2b100",
         "style": {
             "stroke": "#999999",
             "stroke-opacity": "1",
@@ -106,8 +108,8 @@
             "719dab36d89f970d",
             "28e2871482b626f8"
         ],
-        "x": 388,
-        "y": 499,
+        "x": 408,
+        "y": 699,
         "w": 964,
         "h": 348
     },
@@ -115,6 +117,7 @@
         "id": "81b601a34c437d37",
         "type": "group",
         "z": "2f5755c7fdf3b0c1",
+        "g": "7ec45998b9e2b100",
         "style": {
             "stroke": "#999999",
             "stroke-opacity": "1",
@@ -129,8 +132,8 @@
             "ae8045240f1c7a67",
             "73d8b6c93a8fb6ba"
         ],
-        "x": 388,
-        "y": 1279,
+        "x": 408,
+        "y": 1419,
         "w": 964,
         "h": 348
     },
@@ -156,8 +159,8 @@
             "2d223c2eea8005ee",
             "02075f160a48ed9b"
         ],
-        "x": 414,
-        "y": 1359,
+        "x": 434,
+        "y": 1499,
         "w": 452,
         "h": 242
     },
@@ -183,8 +186,8 @@
             "d042deea3fea7c9c",
             "7cf7b471a8c84f8f"
         ],
-        "x": 894,
-        "y": 1359,
+        "x": 914,
+        "y": 1499,
         "w": 432,
         "h": 242
     },
@@ -192,6 +195,7 @@
         "id": "77984375e6f9bd54",
         "type": "group",
         "z": "2f5755c7fdf3b0c1",
+        "g": "7ec45998b9e2b100",
         "style": {
             "stroke": "#999999",
             "stroke-opacity": "1",
@@ -206,8 +210,8 @@
             "9a5adffcb0870f87",
             "7c119c92d20927db"
         ],
-        "x": 388,
-        "y": 879,
+        "x": 408,
+        "y": 1059,
         "w": 924,
         "h": 348
     },
@@ -233,8 +237,8 @@
             "0a17e95d607bd0c7",
             "b6ab8c066a73afb2"
         ],
-        "x": 414,
-        "y": 959,
+        "x": 434,
+        "y": 1139,
         "w": 432,
         "h": 242
     },
@@ -260,8 +264,8 @@
             "6a7b76750535858c",
             "acb172ce1627961b"
         ],
-        "x": 874,
-        "y": 959,
+        "x": 894,
+        "y": 1139,
         "w": 412,
         "h": 242
     },
@@ -269,6 +273,7 @@
         "id": "389862318fb1f404",
         "type": "group",
         "z": "2f5755c7fdf3b0c1",
+        "g": "683bbfe09cd44658",
         "style": {
             "stroke": "#999999",
             "stroke-opacity": "1",
@@ -285,15 +290,92 @@
             "2900cf0b70ecebdb",
             "b01b857cd0f849c2"
         ],
-        "x": 394,
-        "y": 159,
+        "x": 434,
+        "y": 239,
         "w": 472,
         "h": 202
+    },
+    {
+        "id": "683bbfe09cd44658",
+        "type": "group",
+        "z": "2f5755c7fdf3b0c1",
+        "g": "a1ac0ec5b20a1179",
+        "style": {
+            "stroke": "#999999",
+            "stroke-opacity": "1",
+            "fill": "none",
+            "fill-opacity": "1",
+            "label": true,
+            "label-position": "nw",
+            "color": "#a4a4a4"
+        },
+        "nodes": [
+            "32da9343a9be4d6c",
+            "ea6ccdea766df507",
+            "1e6bb26798d95fd9",
+            "389862318fb1f404",
+            "bcd03b54a7add800"
+        ],
+        "x": 74,
+        "y": 119,
+        "w": 1238,
+        "h": 428
+    },
+    {
+        "id": "7ec45998b9e2b100",
+        "type": "group",
+        "z": "2f5755c7fdf3b0c1",
+        "g": "a1ac0ec5b20a1179",
+        "style": {
+            "stroke": "#999999",
+            "stroke-opacity": "1",
+            "fill": "none",
+            "fill-opacity": "1",
+            "label": true,
+            "label-position": "nw",
+            "color": "#a4a4a4"
+        },
+        "nodes": [
+            "411a9923bcde4ab2",
+            "cb88ef37012d9dbb",
+            "ec64b7117c6aed08",
+            "76eda127d9017459",
+            "81b601a34c437d37",
+            "77984375e6f9bd54"
+        ],
+        "x": 74,
+        "y": 579,
+        "w": 1324,
+        "h": 1214
+    },
+    {
+        "id": "a1ac0ec5b20a1179",
+        "type": "group",
+        "z": "2f5755c7fdf3b0c1",
+        "style": {
+            "stroke": "#999999",
+            "stroke-opacity": "1",
+            "fill": "none",
+            "fill-opacity": "1",
+            "label": true,
+            "label-position": "nw",
+            "color": "#a4a4a4"
+        },
+        "nodes": [
+            "5ee7fa3486e3d653",
+            "683bbfe09cd44658",
+            "7ec45998b9e2b100"
+        ],
+        "x": 48,
+        "y": 39,
+        "w": 1376,
+        "h": 1780
     },
     {
         "id": "32da9343a9be4d6c",
         "type": "mqtt in",
         "z": "2f5755c7fdf3b0c1",
+        "g": "683bbfe09cd44658",
         "name": "",
         "topic": "sinte/cuerpo1/ensaht",
         "qos": "2",
@@ -303,8 +385,8 @@
         "rap": true,
         "rh": 0,
         "inputs": 0,
-        "x": 150,
-        "y": 120,
+        "x": 190,
+        "y": 200,
         "wires": [
             [
                 "ea6ccdea766df507",
@@ -323,6 +405,7 @@
         "id": "411a9923bcde4ab2",
         "type": "mqtt in",
         "z": "2f5755c7fdf3b0c1",
+        "g": "7ec45998b9e2b100",
         "name": "",
         "topic": "sinte/cuerpo1/move",
         "qos": "2",
@@ -332,8 +415,8 @@
         "rap": true,
         "rh": 0,
         "inputs": 0,
-        "x": 150,
-        "y": 460,
+        "x": 190,
+        "y": 660,
         "wires": [
             [
                 "cb88ef37012d9dbb",
@@ -368,6 +451,7 @@
         "id": "ea6ccdea766df507",
         "type": "debug",
         "z": "2f5755c7fdf3b0c1",
+        "g": "683bbfe09cd44658",
         "name": "debug 2",
         "active": false,
         "tosidebar": true,
@@ -377,14 +461,15 @@
         "targetType": "msg",
         "statusVal": "",
         "statusType": "auto",
-        "x": 480,
-        "y": 120,
+        "x": 520,
+        "y": 200,
         "wires": []
     },
     {
         "id": "cb88ef37012d9dbb",
         "type": "debug",
         "z": "2f5755c7fdf3b0c1",
+        "g": "7ec45998b9e2b100",
         "name": "debug 3",
         "active": false,
         "tosidebar": true,
@@ -393,8 +478,8 @@
         "complete": "false",
         "statusVal": "",
         "statusType": "auto",
-        "x": 480,
-        "y": 460,
+        "x": 520,
+        "y": 660,
         "wires": []
     },
     {
@@ -418,8 +503,8 @@
         "className": "",
         "value": "payload.ens.aqi",
         "valueType": "msg",
-        "x": 970,
-        "y": 240,
+        "x": 1010,
+        "y": 320,
         "wires": []
     },
     {
@@ -443,8 +528,8 @@
         "className": "",
         "value": "payload.ens.tvoc",
         "valueType": "msg",
-        "x": 970,
-        "y": 280,
+        "x": 1010,
+        "y": 360,
         "wires": []
     },
     {
@@ -468,8 +553,8 @@
         "className": "",
         "value": "payload.ens.eco2",
         "valueType": "msg",
-        "x": 970,
-        "y": 320,
+        "x": 1010,
+        "y": 400,
         "wires": []
     },
     {
@@ -479,18 +564,19 @@
         "g": "1e6bb26798d95fd9",
         "name": "ENS",
         "info": "",
-        "x": 970,
-        "y": 200,
+        "x": 1010,
+        "y": 280,
         "wires": []
     },
     {
         "id": "bcd03b54a7add800",
         "type": "comment",
         "z": "2f5755c7fdf3b0c1",
-        "name": "Cuerpo 1",
+        "g": "683bbfe09cd44658",
+        "name": "ENS+AHT",
         "info": "",
-        "x": 120,
-        "y": 60,
+        "x": 160,
+        "y": 160,
         "wires": []
     },
     {
@@ -514,8 +600,8 @@
         "className": "",
         "value": "payload.imu.A68.ax",
         "valueType": "msg",
-        "x": 490,
-        "y": 660,
+        "x": 510,
+        "y": 860,
         "wires": []
     },
     {
@@ -539,8 +625,8 @@
         "className": "",
         "value": "payload.imu.A68.ay",
         "valueType": "msg",
-        "x": 490,
-        "y": 700,
+        "x": 510,
+        "y": 900,
         "wires": []
     },
     {
@@ -564,8 +650,8 @@
         "className": "",
         "value": "payload.imu.A68.az",
         "valueType": "msg",
-        "x": 490,
-        "y": 740,
+        "x": 510,
+        "y": 940,
         "wires": []
     },
     {
@@ -589,8 +675,8 @@
         "className": "",
         "value": "payload.imu.A68.gx",
         "valueType": "msg",
-        "x": 970,
-        "y": 660,
+        "x": 990,
+        "y": 860,
         "wires": []
     },
     {
@@ -614,8 +700,8 @@
         "className": "",
         "value": "payload.imu.A68.gy",
         "valueType": "msg",
-        "x": 970,
-        "y": 700,
+        "x": 990,
+        "y": 900,
         "wires": []
     },
     {
@@ -639,8 +725,8 @@
         "className": "",
         "value": "payload.imu.A68.gz",
         "valueType": "msg",
-        "x": 970,
-        "y": 740,
+        "x": 990,
+        "y": 940,
         "wires": []
     },
     {
@@ -650,8 +736,8 @@
         "g": "76eda127d9017459",
         "name": "Derecha",
         "info": "",
-        "x": 480,
-        "y": 540,
+        "x": 520,
+        "y": 740,
         "wires": []
     },
     {
@@ -661,8 +747,8 @@
         "g": "719dab36d89f970d",
         "name": "Accel",
         "info": "",
-        "x": 490,
-        "y": 620,
+        "x": 510,
+        "y": 820,
         "wires": []
     },
     {
@@ -672,8 +758,8 @@
         "g": "28e2871482b626f8",
         "name": "Gyro",
         "info": "",
-        "x": 970,
-        "y": 620,
+        "x": 990,
+        "y": 820,
         "wires": []
     },
     {
@@ -683,8 +769,8 @@
         "g": "81b601a34c437d37",
         "name": "Izquierda",
         "info": "",
-        "x": 480,
-        "y": 1320,
+        "x": 520,
+        "y": 1460,
         "wires": []
     },
     {
@@ -708,8 +794,8 @@
         "className": "",
         "value": "payload.imu.B68.ax",
         "valueType": "msg",
-        "x": 490,
-        "y": 1440,
+        "x": 510,
+        "y": 1580,
         "wires": []
     },
     {
@@ -733,8 +819,8 @@
         "className": "",
         "value": "payload.imu.B68.ay",
         "valueType": "msg",
-        "x": 490,
-        "y": 1480,
+        "x": 510,
+        "y": 1620,
         "wires": []
     },
     {
@@ -758,8 +844,8 @@
         "className": "",
         "value": "payload.imu.B68.az",
         "valueType": "msg",
-        "x": 490,
-        "y": 1520,
+        "x": 510,
+        "y": 1660,
         "wires": []
     },
     {
@@ -769,8 +855,8 @@
         "g": "ae8045240f1c7a67",
         "name": "Accel",
         "info": "",
-        "x": 490,
-        "y": 1400,
+        "x": 510,
+        "y": 1540,
         "wires": []
     },
     {
@@ -794,8 +880,8 @@
         "className": "",
         "value": "payload.imu.B68.gx",
         "valueType": "msg",
-        "x": 970,
-        "y": 1440,
+        "x": 990,
+        "y": 1580,
         "wires": []
     },
     {
@@ -819,8 +905,8 @@
         "className": "",
         "value": "payload.imu.B68.gy",
         "valueType": "msg",
-        "x": 970,
-        "y": 1480,
+        "x": 990,
+        "y": 1620,
         "wires": []
     },
     {
@@ -844,8 +930,8 @@
         "className": "",
         "value": "payload.imu.B68.gz",
         "valueType": "msg",
-        "x": 970,
-        "y": 1520,
+        "x": 990,
+        "y": 1660,
         "wires": []
     },
     {
@@ -855,8 +941,8 @@
         "g": "73d8b6c93a8fb6ba",
         "name": "Gyro",
         "info": "",
-        "x": 970,
-        "y": 1400,
+        "x": 990,
+        "y": 1540,
         "wires": []
     },
     {
@@ -866,8 +952,8 @@
         "g": "77984375e6f9bd54",
         "name": "Cuerpo",
         "info": "",
-        "x": 470,
-        "y": 920,
+        "x": 510,
+        "y": 1100,
         "wires": []
     },
     {
@@ -891,8 +977,8 @@
         "className": "",
         "value": "payload.imu.A69.ax",
         "valueType": "msg",
-        "x": 490,
-        "y": 1040,
+        "x": 510,
+        "y": 1220,
         "wires": []
     },
     {
@@ -916,8 +1002,8 @@
         "className": "",
         "value": "payload.imu.A69.ay",
         "valueType": "msg",
-        "x": 490,
-        "y": 1080,
+        "x": 510,
+        "y": 1260,
         "wires": []
     },
     {
@@ -941,8 +1027,8 @@
         "className": "",
         "value": "payload.imu.A69.az",
         "valueType": "msg",
-        "x": 490,
-        "y": 1120,
+        "x": 510,
+        "y": 1300,
         "wires": []
     },
     {
@@ -952,8 +1038,8 @@
         "g": "9a5adffcb0870f87",
         "name": "Accel",
         "info": "",
-        "x": 490,
-        "y": 1000,
+        "x": 510,
+        "y": 1180,
         "wires": []
     },
     {
@@ -977,8 +1063,8 @@
         "className": "",
         "value": "payload.imu.A69.gx",
         "valueType": "msg",
-        "x": 950,
-        "y": 1040,
+        "x": 970,
+        "y": 1220,
         "wires": []
     },
     {
@@ -1002,8 +1088,8 @@
         "className": "",
         "value": "payload.imu.A69.gy",
         "valueType": "msg",
-        "x": 950,
-        "y": 1080,
+        "x": 970,
+        "y": 1260,
         "wires": []
     },
     {
@@ -1027,8 +1113,8 @@
         "className": "",
         "value": "payload.imu.A69.gz",
         "valueType": "msg",
-        "x": 950,
-        "y": 1120,
+        "x": 970,
+        "y": 1300,
         "wires": []
     },
     {
@@ -1038,8 +1124,8 @@
         "g": "7c119c92d20927db",
         "name": "Gyro",
         "info": "",
-        "x": 950,
-        "y": 1000,
+        "x": 970,
+        "y": 1180,
         "wires": []
     },
     {
@@ -1063,8 +1149,8 @@
         "className": "",
         "value": "payload.aht.t",
         "valueType": "msg",
-        "x": 490,
-        "y": 240,
+        "x": 530,
+        "y": 320,
         "wires": []
     },
     {
@@ -1088,8 +1174,8 @@
         "className": "",
         "value": "payload.aht.rh",
         "valueType": "msg",
-        "x": 510,
-        "y": 280,
+        "x": 550,
+        "y": 360,
         "wires": []
     },
     {
@@ -1099,8 +1185,8 @@
         "g": "389862318fb1f404",
         "name": "AHT",
         "info": "",
-        "x": 470,
-        "y": 200,
+        "x": 510,
+        "y": 280,
         "wires": []
     },
     {
@@ -1160,8 +1246,8 @@
         "height": "4",
         "className": "",
         "interpolation": "linear",
-        "x": 740,
-        "y": 320,
+        "x": 780,
+        "y": 400,
         "wires": [
             []
         ]
@@ -1179,8 +1265,8 @@
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 480,
-        "y": 320,
+        "x": 520,
+        "y": 400,
         "wires": [
             [
                 "b01b857cd0f849c2"
@@ -1200,8 +1286,8 @@
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 980,
-        "y": 360,
+        "x": 1020,
+        "y": 440,
         "wires": [
             [
                 "22795b8369b658dd"
@@ -1265,8 +1351,8 @@
         "height": "4",
         "className": "",
         "interpolation": "linear",
-        "x": 1150,
-        "y": 360,
+        "x": 1190,
+        "y": 440,
         "wires": [
             []
         ]
@@ -1320,8 +1406,8 @@
         "styleRounded": true,
         "styleGlow": false,
         "className": "",
-        "x": 970,
-        "y": 400,
+        "x": 1010,
+        "y": 480,
         "wires": [
             []
         ]
@@ -1339,8 +1425,8 @@
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 500,
-        "y": 780,
+        "x": 520,
+        "y": 980,
         "wires": [
             [
                 "40f6363e9f5adc30"
@@ -1404,8 +1490,8 @@
         "height": "4",
         "className": "",
         "interpolation": "linear",
-        "x": 740,
-        "y": 780,
+        "x": 760,
+        "y": 980,
         "wires": [
             []
         ]
@@ -1467,8 +1553,8 @@
         "height": "4",
         "className": "",
         "interpolation": "linear",
-        "x": 1200,
-        "y": 780,
+        "x": 1220,
+        "y": 980,
         "wires": [
             []
         ]
@@ -1486,8 +1572,8 @@
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 980,
-        "y": 780,
+        "x": 1000,
+        "y": 980,
         "wires": [
             [
                 "059c4ba9950733dd"
@@ -1507,8 +1593,8 @@
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 500,
-        "y": 1160,
+        "x": 520,
+        "y": 1340,
         "wires": [
             [
                 "b6ab8c066a73afb2"
@@ -1528,8 +1614,8 @@
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 960,
-        "y": 1160,
+        "x": 980,
+        "y": 1340,
         "wires": [
             [
                 "acb172ce1627961b"
@@ -1549,8 +1635,8 @@
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 500,
-        "y": 1560,
+        "x": 520,
+        "y": 1700,
         "wires": [
             [
                 "02075f160a48ed9b"
@@ -1570,8 +1656,8 @@
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 980,
-        "y": 1560,
+        "x": 1000,
+        "y": 1700,
         "wires": [
             [
                 "7cf7b471a8c84f8f"
@@ -1635,8 +1721,8 @@
         "height": "4",
         "className": "",
         "interpolation": "linear",
-        "x": 720,
-        "y": 1160,
+        "x": 740,
+        "y": 1340,
         "wires": [
             []
         ]
@@ -1698,8 +1784,8 @@
         "height": "4",
         "className": "",
         "interpolation": "linear",
-        "x": 1170,
-        "y": 1160,
+        "x": 1190,
+        "y": 1340,
         "wires": [
             []
         ]
@@ -1761,8 +1847,8 @@
         "height": "4",
         "className": "",
         "interpolation": "linear",
-        "x": 730,
-        "y": 1560,
+        "x": 750,
+        "y": 1700,
         "wires": [
             []
         ]
@@ -1824,11 +1910,33 @@
         "height": "4",
         "className": "",
         "interpolation": "linear",
-        "x": 1200,
-        "y": 1560,
+        "x": 1220,
+        "y": 1700,
         "wires": [
             []
         ]
+    },
+    {
+        "id": "ec64b7117c6aed08",
+        "type": "comment",
+        "z": "2f5755c7fdf3b0c1",
+        "g": "7ec45998b9e2b100",
+        "name": "IMUs",
+        "info": "",
+        "x": 150,
+        "y": 620,
+        "wires": []
+    },
+    {
+        "id": "5ee7fa3486e3d653",
+        "type": "comment",
+        "z": "2f5755c7fdf3b0c1",
+        "g": "a1ac0ec5b20a1179",
+        "name": "Cuerpo 1",
+        "info": "",
+        "x": 160,
+        "y": 80,
+        "wires": []
     },
     {
         "id": "23e1fa3d27579558",
@@ -2063,7 +2171,7 @@
         }
     },
     {
-        "id": "ceed33478b437b01",
+        "id": "be7d4f3c1ecef763",
         "type": "global-config",
         "env": [],
         "modules": {
