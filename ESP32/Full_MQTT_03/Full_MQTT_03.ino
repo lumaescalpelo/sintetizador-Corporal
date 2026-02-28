@@ -2,6 +2,7 @@
 #include <WiFi.h>
 #include <PubSubClient.h>
 #include <ArduinoJson.h>
+#include <math.h>
 
 // ================= WiFi / MQTT =================
 static const char* WIFI_SSID = "INFINITUMD2AC";
@@ -9,7 +10,10 @@ static const char* WIFI_PASS = "PCwGdtcV9D";
 
 static const char* MQTT_HOST = "192.168.1.100";
 static const uint16_t MQTT_PORT = 1883;
-static const char* MQTT_TOPIC = "sinte/cuerpo1";
+
+// Topics
+static const char* TOPIC_ENSAHT = "sinte/cuerpo1/ensaht";
+static const char* TOPIC_MOVE   = "sinte/cuerpo1/move";
 
 WiFiClient espClient;
 PubSubClient mqtt(espClient);
@@ -19,17 +23,11 @@ PubSubClient mqtt(espClient);
 #define SCL_A 22
 #define SDA_B 16
 #define SCL_B 17
-
 TwoWire I2C_B = TwoWire(1);
 
 // ================= I2C Pines (Software BUS C) =================
 #define SDA_C 25
 #define SCL_C 26
-
-// ================= ADC Pines =================
-static const int PIN_HALL_32 = 32; // 49E
-static const int PIN_MQ6_34  = 34; // MQ-6
-static const int PIN_HALL_35 = 35; // 49E
 
 // ================= IMUInfo =================
 struct IMUInfo {
@@ -40,7 +38,7 @@ struct IMUInfo {
 };
 
 // ============================================================
-//                   Helpers I2C (Hardware)
+//                 Helpers I2C (Hardware)
 // ============================================================
 bool write8(TwoWire &bus, uint8_t addr, uint8_t reg, uint8_t val) {
   bus.beginTransmission(addr);
@@ -70,12 +68,8 @@ bool ping(TwoWire &bus, uint8_t addr) {
 // ============================================================
 //                 Software I2C (BUS C) Bitbang
 // ============================================================
-// Bitbang súper simple: START/STOP/WRITE/READ con delays.
-// Suficiente para AHT2x + ENS160 en bus dedicado.
-
 static inline void i2cDelay() {
-  // Ajusta si hace falta: más delay = más confiable (pero más lento)
-  delayMicroseconds(6); // ~80-100kHz "aprox" según overhead
+  delayMicroseconds(6); // si falla, súbelo (8-12)
 }
 
 static inline void sdaHi() { pinMode(SDA_C, INPUT_PULLUP); }
@@ -89,7 +83,6 @@ static inline bool sdaRead() { return digitalRead(SDA_C); }
 void i2cSoftInit() {
   pinMode(SDA_C, INPUT_PULLUP);
   pinMode(SCL_C, INPUT_PULLUP);
-  // idle high
 }
 
 void i2cSoftStart() {
@@ -104,7 +97,6 @@ void i2cSoftStop() {
   sdaHi(); i2cDelay();
 }
 
-// Devuelve true si el esclavo ACK
 bool i2cSoftWriteByte(uint8_t b) {
   for (int i = 0; i < 8; i++) {
     if (b & 0x80) sdaHi(); else sdaLo();
@@ -113,7 +105,6 @@ bool i2cSoftWriteByte(uint8_t b) {
     sclLo(); i2cDelay();
     b <<= 1;
   }
-  // ACK bit
   sdaHi();
   i2cDelay();
   sclHi(); i2cDelay();
@@ -124,14 +115,13 @@ bool i2cSoftWriteByte(uint8_t b) {
 
 uint8_t i2cSoftReadByte(bool ack) {
   uint8_t b = 0;
-  sdaHi(); // release
+  sdaHi();
   for (int i = 0; i < 8; i++) {
     b <<= 1;
     sclHi(); i2cDelay();
     if (sdaRead()) b |= 1;
     sclLo(); i2cDelay();
   }
-  // Send ACK/NACK
   if (ack) sdaLo(); else sdaHi();
   i2cDelay();
   sclHi(); i2cDelay();
@@ -142,7 +132,7 @@ uint8_t i2cSoftReadByte(bool ack) {
 
 bool i2cSoftPing(uint8_t addr7) {
   i2cSoftStart();
-  bool ok = i2cSoftWriteByte((addr7 << 1) | 0); // write
+  bool ok = i2cSoftWriteByte((addr7 << 1) | 0);
   i2cSoftStop();
   return ok;
 }
@@ -175,7 +165,7 @@ bool i2cSoftReadRegN(uint8_t addr7, uint8_t reg, uint8_t *buf, size_t n) {
   if (!i2cSoftWriteByte((addr7 << 1) | 1)) { i2cSoftStop(); return false; }
 
   for (size_t i = 0; i < n; i++) {
-    buf[i] = i2cSoftReadByte(i + 1 < n); // ACK excepto el último
+    buf[i] = i2cSoftReadByte(i + 1 < n);
   }
   i2cSoftStop();
   return true;
@@ -227,11 +217,9 @@ uint8_t ensC_find_addr() {
 
 bool ensC_init(uint8_t addr) {
   if (!addr) return false;
-  // Clear general purpose? (como tu bare-metal)
   i2cSoftWriteReg(addr, 0x12, 0x00);
   delay(20);
-  // OPMODE = 0x02 (STANDARD)
-  if (!i2cSoftWriteReg(addr, 0x10, 0x02)) return false;
+  if (!i2cSoftWriteReg(addr, 0x10, 0x02)) return false; // STANDARD
   delay(50);
   return true;
 }
@@ -258,11 +246,11 @@ bool ensC_read_basic(uint8_t addr, uint8_t &aqi, uint16_t &tvoc, uint16_t &eco2,
 }
 
 // ============================================================
-//                    MPU-6050 / ICM (hardware)
+//                 IMU: MPU-6050 / ICM-20948
 // ============================================================
 bool mpu_init(TwoWire &bus, uint8_t addr) {
   if (!write8(bus, addr, 0x6B, 0x00)) return false;
-  delay(10);
+  delay(2);
   write8(bus, addr, 0x1B, 0x00);
   write8(bus, addr, 0x1C, 0x00);
   return true;
@@ -296,13 +284,14 @@ bool icm_select_bank(TwoWire &bus, uint8_t addr, uint8_t bank) {
 bool icm_init(TwoWire &bus, uint8_t addr) {
   if (!icm_select_bank(bus, addr, 0)) return false;
   write8(bus, addr, 0x06, 0x01);
-  delay(10);
+  delay(2);
   return true;
 }
 
 bool icm_read_ag(TwoWire &bus, uint8_t addr, float &ax_g, float &ay_g, float &az_g,
                  float &gx_dps, float &gy_dps, float &gz_dps) {
   if (!icm_select_bank(bus, addr, 0)) return false;
+
   uint8_t bufA[6], bufG[6];
   if (!readN(bus, addr, 0x2D, bufA, 6)) return false;
   if (!readN(bus, addr, 0x33, bufG, 6)) return false;
@@ -327,7 +316,6 @@ bool icm_read_ag(TwoWire &bus, uint8_t addr, float &ax_g, float &ay_g, float &az
 IMUInfo detectIMU(TwoWire &bus, uint8_t addr) {
   IMUInfo info;
   info.addr = addr;
-
   if (!ping(bus, addr)) return info;
 
   uint8_t who_mpu;
@@ -348,15 +336,38 @@ IMUInfo detectIMU(TwoWire &bus, uint8_t addr) {
     }
   }
 
-  info.present = true; // presente pero desconocido
+  info.present = true;
   return info;
 }
 
 // ============================================================
-//                    ADC / WiFi / MQTT
+//                      Formateo pedido
 // ============================================================
-float adc_to_volts(int raw, float vref = 3.3f) { return (raw * vref) / 4095.0f; }
 
+// 1 decimal truncado (no redondeado)
+float trunc1(float x) {
+  if (isnan(x) || isinf(x)) return x;
+  return (float)((int)(x * 10.0f)) / 10.0f;
+}
+
+// 2 cifras significativas (redondeado). Mucho más útil para “movimiento”.
+float sig2(float x) {
+  if (x == 0.0f || isnan(x) || isinf(x)) return x;
+  float ax = fabsf(x);
+  int e = (int)floorf(log10f(ax));
+  float scale = powf(10.0f, 1 - e); // 2 sig figs
+  return roundf(x * scale) / scale;
+}
+
+// entero truncado hacia cero
+int toIntTrunc(float x) {
+  if (isnan(x) || isinf(x)) return 0;
+  return (int)x;
+}
+
+// ============================================================
+//                      WiFi / MQTT
+// ============================================================
 void wifiConnect() {
   WiFi.mode(WIFI_STA);
   WiFi.setSleep(false);
@@ -378,7 +389,6 @@ void mqttConnect() {
   mqtt.setServer(MQTT_HOST, MQTT_PORT);
   mqtt.setKeepAlive(30);
   mqtt.setSocketTimeout(5);
-  // Para payloads grandes
   mqtt.setBufferSize(1024);
 
   while (!mqtt.connected()) {
@@ -390,168 +400,191 @@ void mqttConnect() {
 }
 
 // ============================================================
-//                          Setup / Loop
+//                      App state / Timers
 // ============================================================
 static uint8_t ensC_addr = 0;
 static bool ensC_ready = false;
 
+static uint32_t lastMoveMs   = 0;
+static uint32_t lastEnsAhtMs = 0;
+
+static const uint32_t MOVE_INTERVAL_MS   = 200;   // IMUs cada 200ms
+static const uint32_t ENSAHT_INTERVAL_MS = 2000;  // ENS+AHT cada 2s
+
+// ============================================================
+//                           Setup
+// ============================================================
 void setup() {
   Serial.begin(115200);
-  delay(400);
+  delay(300);
 
-  // Hardware I2C
+  // I2C hardware
   Wire.begin(SDA_A, SCL_A);
   Wire.setClock(400000);
 
   I2C_B.begin(SDA_B, SCL_B);
   I2C_B.setClock(400000);
 
-  // Software I2C (BUS C)
+  // I2C software bus C
   i2cSoftInit();
   delay(10);
 
-  // ADC config
-  analogReadResolution(12);
-  analogSetAttenuation(ADC_11db);
-  analogSetPinAttenuation(PIN_HALL_32, ADC_11db);
-  analogSetPinAttenuation(PIN_MQ6_34,  ADC_11db);
-  analogSetPinAttenuation(PIN_HALL_35, ADC_11db);
-
   // Init AHT+ENS en BUS C (soft)
-  Serial.println("\nI2C ping (BUS C soft):");
-  Serial.print("  AHT 0x38: "); Serial.println(i2cSoftPing(0x38) ? "OK" : "NO");
-  Serial.print("  ENS 0x52: "); Serial.println(i2cSoftPing(0x52) ? "OK" : "NO");
-  Serial.print("  ENS 0x53: "); Serial.println(i2cSoftPing(0x53) ? "OK" : "NO");
-
-  if (i2cSoftPing(0x38)) {
+  if (i2cSoftPing(AHT_ADDR)) {
     ahtC_soft_reset();
     ahtC_init();
   }
-
   ensC_addr = ensC_find_addr();
   if (ensC_addr) ensC_ready = ensC_init(ensC_addr);
 
-  // Red
+  // WiFi/MQTT
   wifiConnect();
   mqttConnect();
 
-  Serial.println("Full_MQTT (A,B hardware + C software) listo.");
+  Serial.println("Split MQTT listo: ensaht@2s / move@200ms");
 }
 
+// ============================================================
+//                           Loop
+// ============================================================
 void loop() {
   if (WiFi.status() != WL_CONNECTED) wifiConnect();
   if (!mqtt.connected()) mqttConnect();
   mqtt.loop();
 
-  // ===== ADC =====
-  int raw32 = analogRead(PIN_HALL_32);
-  int raw34 = analogRead(PIN_MQ6_34);
-  int raw35 = analogRead(PIN_HALL_35);
+  uint32_t now = millis();
 
-  float v32 = adc_to_volts(raw32);
-  float v34 = adc_to_volts(raw34);
-  float v35 = adc_to_volts(raw35);
+  // ==========================================================
+  // MOVE (IMUs) cada 200ms
+  // ==========================================================
+  if ((uint32_t)(now - lastMoveMs) >= MOVE_INTERVAL_MS) {
+    lastMoveMs = now;
 
-  // ===== ENS + AHT en BUS C (software) =====
-  float c_t = NAN, c_rh = NAN;
-  bool c_aht_ok = ahtC_read(c_t, c_rh);
+    // Detect IMUs (NO incluimos B69)
+    IMUInfo imuA_68 = detectIMU(Wire, 0x68);
+    IMUInfo imuA_69 = detectIMU(Wire, 0x69);
+    IMUInfo imuB_68 = detectIMU(I2C_B, 0x68);
+    // IMUInfo imuB_69 = detectIMU(I2C_B, 0x69); // <- NO
 
-  // Si ENS no estaba listo, reintenta detectar/init cada cierto tiempo
-  if (!ensC_ready) {
-    ensC_addr = ensC_find_addr();
-    if (ensC_addr) ensC_ready = ensC_init(ensC_addr);
+    auto readIMU = [](TwoWire &bus, IMUInfo imu,
+                      float &ax, float &ay, float &az, float &gx, float &gy, float &gz, bool &ok) {
+      ax = ay = az = gx = gy = gz = NAN;
+      ok = false;
+      if (!imu.present) return;
+
+      if (imu.isMPU6050) {
+        mpu_init(bus, imu.addr);
+        ok = mpu_read_ag(bus, imu.addr, ax, ay, az, gx, gy, gz);
+      } else if (imu.isICM20948) {
+        icm_init(bus, imu.addr);
+        ok = icm_read_ag(bus, imu.addr, ax, ay, az, gx, gy, gz);
+      }
+    };
+
+    float a68_ax, a68_ay, a68_az, a68_gx, a68_gy, a68_gz; bool a68_ok;
+    float a69_ax, a69_ay, a69_az, a69_gx, a69_gy, a69_gz; bool a69_ok;
+    float b68_ax, b68_ay, b68_az, b68_gx, b68_gy, b68_gz; bool b68_ok;
+
+    readIMU(Wire,  imuA_68, a68_ax, a68_ay, a68_az, a68_gx, a68_gy, a68_gz, a68_ok);
+    readIMU(Wire,  imuA_69, a69_ax, a69_ay, a69_az, a69_gx, a69_gy, a69_gz, a69_ok);
+    readIMU(I2C_B, imuB_68, b68_ax, b68_ay, b68_az, b68_gx, b68_gy, b68_gz, b68_ok);
+
+    StaticJsonDocument<512> doc;
+    doc["ms"] = now;
+    doc["device"] = "esp32-cuerpo1";
+
+    JsonObject imu = doc.createNestedObject("imu");
+
+    auto putIMU = [&](const char* key, bool ok, float ax, float ay, float az, float gx, float gy, float gz) {
+      if (!ok) return; // <- NO creamos objeto si no hay lectura válida
+      JsonObject o = imu.createNestedObject(key);
+
+      // Acelerómetro: 2 cifras significativas
+      o["ax"] = sig2(ax);
+      o["ay"] = sig2(ay);
+      o["az"] = sig2(az);
+
+      // Giroscopio: enteros
+      o["gx"] = toIntTrunc(gx);
+      o["gy"] = toIntTrunc(gy);
+      o["gz"] = toIntTrunc(gz);
+    };
+
+    putIMU("A68", a68_ok, a68_ax, a68_ay, a68_az, a68_gx, a68_gy, a68_gz);
+    putIMU("A69", a69_ok, a69_ax, a69_ay, a69_az, a69_gx, a69_gy, a69_gz);
+    putIMU("B68", b68_ok, b68_ax, b68_ay, b68_az, b68_gx, b68_gy, b68_gz);
+
+    char payload[512];
+    size_t n = serializeJson(doc, payload, sizeof(payload));
+    bool okPub = mqtt.publish(TOPIC_MOVE, payload, n);
+
+    Serial.print(okPub ? "MOVE OK " : "MOVE FAIL ");
+    Serial.print("bytes="); Serial.print(n);
+    Serial.print(" -> ");
+    Serial.println(payload);
   }
 
-  uint8_t c_aqi = 0, c_flags = 0;
-  uint16_t c_tvoc = 0, c_eco2 = 0;
-  bool c_ens_ok = false;
-  if (ensC_ready) {
-    c_ens_ok = ensC_read_basic(ensC_addr, c_aqi, c_tvoc, c_eco2, c_flags);
-    // Si falla, marca como no listo para forzar reinit después
-    if (!c_ens_ok) ensC_ready = false;
-  }
+  // ==========================================================
+  // ENSAHT cada 2000ms
+  // ==========================================================
+  if ((uint32_t)(now - lastEnsAhtMs) >= ENSAHT_INTERVAL_MS) {
+    lastEnsAhtMs = now;
 
-  // ===== IMUs (A/B hardware) =====
-  IMUInfo imuA_68 = detectIMU(Wire, 0x68);
-  IMUInfo imuA_69 = detectIMU(Wire, 0x69);
-  IMUInfo imuB_68 = detectIMU(I2C_B, 0x68);
-  IMUInfo imuB_69 = detectIMU(I2C_B, 0x69);
-
-  auto readIMU = [](TwoWire &bus, IMUInfo imu,
-                    float &ax, float &ay, float &az, float &gx, float &gy, float &gz, bool &ok) {
-    ax = ay = az = gx = gy = gz = NAN;
-    ok = false;
-    if (!imu.present) return;
-
-    if (imu.isMPU6050) {
-      mpu_init(bus, imu.addr);
-      ok = mpu_read_ag(bus, imu.addr, ax, ay, az, gx, gy, gz);
-    } else if (imu.isICM20948) {
-      icm_init(bus, imu.addr);
-      ok = icm_read_ag(bus, imu.addr, ax, ay, az, gx, gy, gz);
+    if (!ensC_ready) {
+      ensC_addr = ensC_find_addr();
+      if (ensC_addr) ensC_ready = ensC_init(ensC_addr);
     }
-  };
 
-  float a68_ax, a68_ay, a68_az, a68_gx, a68_gy, a68_gz; bool a68_ok;
-  float a69_ax, a69_ay, a69_az, a69_gx, a69_gy, a69_gz; bool a69_ok;
-  float b68_ax, b68_ay, b68_az, b68_gx, b68_gy, b68_gz; bool b68_ok;
-  float b69_ax, b69_ay, b69_az, b69_gx, b69_gy, b69_gz; bool b69_ok;
+    float t = NAN, rh = NAN;
+    bool aht_ok = ahtC_read(t, rh);
 
-  readIMU(Wire,  imuA_68, a68_ax, a68_ay, a68_az, a68_gx, a68_gy, a68_gz, a68_ok);
-  readIMU(Wire,  imuA_69, a69_ax, a69_ay, a69_az, a69_gx, a69_gy, a69_gz, a69_ok);
-  readIMU(I2C_B, imuB_68, b68_ax, b68_ay, b68_az, b68_gx, b68_gy, b68_gz, b68_ok);
-  readIMU(I2C_B, imuB_69, b69_ax, b69_ay, b69_az, b69_gx, b69_gy, b69_gz, b69_ok);
+    uint8_t aqi = 0, flags = 0;
+    uint16_t tvoc = 0, eco2 = 0;
+    bool ens_ok = false;
 
-  // ===== JSON payload =====
-  StaticJsonDocument<1024> doc;
-  doc["ms"] = (uint32_t)millis();
-  doc["device"] = "esp32-cuerpo1";
+    if (ensC_ready) {
+      ens_ok = ensC_read_basic(ensC_addr, aqi, tvoc, eco2, flags);
+      if (!ens_ok) ensC_ready = false;
+    }
 
-  JsonObject adc = doc.createNestedObject("adc");
-  adc["h32"] = raw32; adc["h32v"] = v32;
-  adc["mq6"] = raw34; adc["mq6v"] = v34;
-  adc["h35"] = raw35; adc["h35v"] = v35;
+    StaticJsonDocument<256> doc;
+    doc["ms"] = now;
+    doc["device"] = "esp32-cuerpo1";
 
-  JsonObject aht = doc.createNestedObject("aht");
-  JsonObject ahtC = aht.createNestedObject("C");
-  if (c_aht_ok) { ahtC["t"] = c_t; ahtC["rh"] = c_rh; }
-  else          { ahtC["t"] = nullptr; ahtC["rh"] = nullptr; }
+    JsonObject aht = doc.createNestedObject("aht");
+    if (aht_ok) {
+      // Temp: 1 decimal
+      aht["t"] = trunc1(t);
+      // RH: entero
+      aht["rh"] = (int)rh;
+    } else {
+      // si falla, no inventamos valores
+      aht["t"] = nullptr;
+      aht["rh"] = nullptr;
+    }
 
-  JsonObject ens = doc.createNestedObject("ens");
-  JsonObject ensC = ens.createNestedObject("C");
-  if (ensC_addr) ensC["addr"] = ensC_addr; else ensC["addr"] = nullptr;
-  if (c_ens_ok) {
-    ensC["aqi"] = c_aqi;
-    ensC["tvoc"] = c_tvoc;
-    ensC["eco2"] = c_eco2;
-    ensC["flags"] = c_flags;
-  } else {
-    ensC["aqi"] = nullptr;
-    ensC["tvoc"] = nullptr;
-    ensC["eco2"] = nullptr;
-    ensC["flags"] = nullptr;
+    JsonObject ens = doc.createNestedObject("ens");
+    if (ensC_addr) ens["addr"] = ensC_addr; else ens["addr"] = nullptr;
+
+    if (ens_ok) {
+      ens["aqi"] = aqi;               // (si luego lo quieres quitar, se quita)
+      ens["tvoc"] = (int)tvoc;        // entero
+      ens["eco2"] = (int)eco2;        // entero
+      ens["flags"] = flags;
+    } else {
+      ens["aqi"] = nullptr;
+      ens["tvoc"] = nullptr;
+      ens["eco2"] = nullptr;
+      ens["flags"] = nullptr;
+    }
+
+    char payload[256];
+    size_t n = serializeJson(doc, payload, sizeof(payload));
+    bool okPub = mqtt.publish(TOPIC_ENSAHT, payload, n);
+
+    Serial.print(okPub ? "ENSAHT OK " : "ENSAHT FAIL ");
+    Serial.print("bytes="); Serial.print(n);
+    Serial.print(" -> ");
+    Serial.println(payload);
   }
-
-  JsonObject imu = doc.createNestedObject("imu");
-  auto imuObj = [&](const char* key, bool ok, float ax, float ay, float az, float gx, float gy, float gz) {
-    JsonObject o = imu.createNestedObject(key);
-    if (ok) { o["ax"]=ax; o["ay"]=ay; o["az"]=az; o["gx"]=gx; o["gy"]=gy; o["gz"]=gz; }
-    else    { o["ax"]=nullptr; o["ay"]=nullptr; o["az"]=nullptr; o["gx"]=nullptr; o["gy"]=nullptr; o["gz"]=nullptr; }
-  };
-
-  imuObj("A68", a68_ok, a68_ax, a68_ay, a68_az, a68_gx, a68_gy, a68_gz);
-  imuObj("A69", a69_ok, a69_ax, a69_ay, a69_az, a69_gx, a69_gy, a69_gz);
-  imuObj("B68", b68_ok, b68_ax, b68_ay, b68_az, b68_gx, b68_gy, b68_gz);
-  imuObj("B69", b69_ok, b69_ax, b69_ay, b69_az, b69_gx, b69_gy, b69_gz);
-
-  char payload[1024];
-  size_t n = serializeJson(doc, payload, sizeof(payload));
-
-  bool okPub = mqtt.publish(MQTT_TOPIC, payload, n);
-  Serial.print(okPub ? "MQTT OK " : "MQTT FAIL ");
-  Serial.print("bytes="); Serial.print(n);
-  Serial.print(" -> ");
-  Serial.println(payload);
-
-  delay(3000);
 }
