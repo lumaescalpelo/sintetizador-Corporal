@@ -5,10 +5,10 @@
 #include <math.h>
 
 // ================= WiFi / MQTT =================
-static const char* WIFI_SSID = "INFINITUMD2AC";
-static const char* WIFI_PASS = "PCwGdtcV9D";
+static const char* WIFI_SSID = "INFINITUMD2AC";//Nombre de Red
+static const char* WIFI_PASS = "PCwGdtcV9D";// Contraseña
 
-static const char* MQTT_HOST = "192.168.1.100";
+static const char* MQTT_HOST = "192.168.1.100";//IP
 static const uint16_t MQTT_PORT = 1883;
 
 // Topics
