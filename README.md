@@ -72,3 +72,17 @@ Este proyecto requiere una colección de software necesaria para el funcionamien
 - [Mosquitto](https://mosquitto.org/download/). Probado con la versión 2.0.22
 
 Consulta cada carpeta correspondiente a cada software para verificar configuraciones específicas.
+
+
+## Operar el sintetizador
+
+Para operar el sintetizador corporal se deben seguir los siguientes pasos:
+
+- Abrir Símbolo del sistema
+- Ejecutar comando node-red
+- Abrir localhost:1880 en cualquier navegador
+- Contectar todos los equipos a la misma red
+- Abrir otro símbolo del sistema
+- Ejecutar el comando ipconfig
+- Verificar que el flow en node-red tiene la ip del servidor mosquitto
+- Si es en la misma computadora debe ser `localhost` o `127.0.0.1`
